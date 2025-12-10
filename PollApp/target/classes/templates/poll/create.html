@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create a New Poll!</title>
+    <style>
+        /* BLACK & WHITE THEME STYLES */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #F9F9F9; /* Very Light Gray Background */
+            color: #333333; 
+            margin: 0; 
+            padding: 20px; 
+            text-align: center; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 30px auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #EBEBEB; /* Light Border */
+            text-align: left; 
+        }
+        h1 { 
+            color: #333333; /* Dark Gray Header */
+            text-align: center; 
+            margin-bottom: 30px; 
+            border-bottom: 2px solid #DDDDDD; /* Subtle Separator */
+            padding-bottom: 15px;
+        }
+        label { 
+            display: block; 
+            margin-top: 15px; 
+            color: #555555; 
+            font-weight: 600; 
+            font-size: 1.1em; 
+        }
+        input[type="text"] { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #CCCCCC; /* Light Border for Inputs */
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            margin-top: 5px; 
+        }
+        .candidate-input-group { 
+            margin-top: 15px; 
+            border: 1px dashed #666666; /* Accent Dashed Border */
+            padding: 15px; 
+            border-radius: 8px; 
+            background-color: #F0F0F0; /* Slight Fill for contrast */
+        }
+        #candidate-options input { 
+            margin-top: 10px; 
+        }
+        .action-button { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 25px; 
+            background-color: #333333; /* Primary Action Button */
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: background-color 0.3s; 
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .action-button:hover { 
+            background-color: #555555; /* Darker Hover Effect */
+        }
+        .back-link {
+            color: #666666; /* Secondary Link Color */
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Create New Poll </h1>
+        
+        <form th:action="@{/polls/create}" method="post" th:object="${poll}">
+            
+            <label for="question">Poll Question:</label>
+            <input type="text" id="question" th:field="*{question}" required placeholder="e.g., Which pastel color is your favorite?"/>
+
+            <label>✔️ Poll Options (Choices):</label>
+            <div id="candidate-options">
+                <div class="candidate-input-group">
+                    <input type="text" name="participantName" placeholder="Option 1 (Required)" required/>
+                    <input type="text" name="participantName" placeholder="Option 2 (Required)" required/>
+                    <input type="text" name="participantName" placeholder="Option 3 (Optional)"/>
+                    <input type="text" name="participantName" placeholder="Option 4 (Optional)"/>
+                </div>
+            </div>
+            
+            <button type="submit" class="action-button">LAUNCH POLL!</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 30px;">
+            <a th:href="@{/polls/list}" class="back-link">← Back to Poll List</a>
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Results: <span th:text="${poll.question}"></span></title>
+    <style>
+        /* BLACK & WHITE THEME STYLES */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #F9F9F9; /* Very Light Gray Background */
+            color: #333333; 
+            margin: 0; 
+            padding: 20px; 
+            text-align: center; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 30px auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #DDDDDD; /* Light Border */
+        }
+        h1 { 
+            color: #333333; /* Dark Header */
+            margin-bottom: 25px; 
+            border-bottom: 2px solid #DDDDDD;
+            padding-bottom: 10px;
+        }
+        .voted-success { 
+            background: #EBEBEB; /* Light Gray Success Box */
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            color: #333333; 
+            font-weight: 600; 
+            border: 1px solid #AAAAAA; 
+        }
+        /* Results Table */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 30px; 
+        }
+        th, td { 
+            border: 1px solid #AAAAAA; /* Gray Border */
+            padding: 12px; 
+            text-align: center; 
+        }
+        th { 
+            background-color: #666666; /* Darker Gray Header Row */
+            color: white; 
+            font-weight: 700; 
+        }
+        td { 
+            background-color: #F8F8F8; /* Light Stripe */
+        }
+        .rank { 
+            background-color: #333333; /* Black/Dark Gray Rank Highlight */
+            color: white; 
+            font-weight: 700; 
+        }
+        .total-votes { 
+            margin-top: 25px; 
+            font-size: 1.2em; 
+            color: #555555; 
+            font-weight: 600; 
+            padding: 10px;
+            border-top: 1px solid #CCCCCC;
+        }
+        .back-link {
+            color: #666666; /* Secondary Link Color */
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Results for: <span th:text="${poll.question}"></span></h1>
+        
+        <div th:if="${param.voted}" class="voted-success">
+            ✅ Vote recorded! Results updated.
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>🏆 Rank</th>
+                    <th>Option</th>
+                    <th>Votes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="result, stats : ${results}">
+                    <td class="rank" th:text="${stats.index + 1}">1</td>
+                    <td th:text="${result.name}">Participant Option</td>
+                    <td th:text="${result.voteCount}">0</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p class="total-votes">Total Votes: <span th:text="${#lists.isEmpty(results) ? 0 : #aggregates.sum(results.![voteCount])}">0</span></p>
+        
+        <p style="margin-top: 30px;">
+            <a th:href="@{/polls/list}" class="back-link">← Back to Poll List</a>
+        </p>
+    </div>
+</body>
+</html>

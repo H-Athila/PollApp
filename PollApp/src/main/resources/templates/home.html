@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to PollApp!</title>
+    <style>
+        /* BLACK & WHITE THEME STYLES */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #F9F9F9; /* Very Light Gray Background */
+            color: #333333; 
+            margin: 0; 
+            padding: 20px; 
+            text-align: center; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 50px auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #DDDDDD; /* Light Border */
+        }
+        h1 { 
+            color: #333333; /* Dark Header */
+            font-size: 2.2em; 
+            margin-bottom: 25px; 
+            border-bottom: 2px solid #DDDDDD;
+            padding-bottom: 10px;
+        }
+        hr { 
+            border-color: #DDDDDD; 
+            margin: 20px 0;
+        }
+        p { 
+            color: #555555; 
+            font-size: 1.1em; 
+        }
+        .action-link { 
+            display: inline-block; 
+            padding: 12px 25px; 
+            margin: 10px; 
+            background-color: #666666; /* Button Background */
+            color: white; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            transition: background-color 0.3s; 
+            border: 1px solid #666666; 
+        }
+        .action-link:hover { 
+            background-color: #333333; 
+            color: white; 
+        }
+        .logout-button { 
+            background: #CCCCCC; /* Light Gray Button */
+            color: #333333; 
+            border: 1px solid #AAAAAA; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .logout-button:hover {
+            background: #AAAAAA;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to PollApp</h1>
+        <hr>
+
+        <div sec:authorize="isAuthenticated()">
+            <p>Ready to create or vote in a poll, <span sec:authentication="name">User</span>?</p>
+            <a th:href="@{/polls/list}" class="action-link">🗳️ Go to Polls Gallery</a>
+            <form th:action="@{/logout}" method="post" style="margin-top: 30px;">
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </div>
+
+        <div sec:authorize="!isAuthenticated()">
+            <p>Please log in or register to join the fun!</p>
+            <a th:href="@{/login}" class="action-link" style="background-color: #333333; border-color: #333333;">🔑 Login</a>
+            <a th:href="@{/register}" class="action-link" style="background-color: #333333; border-color: #333333;">✍️ Register</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vote: <span th:text="${poll.question}"></span></title>
+    <style>
+        /* BLACK & WHITE THEME STYLES */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #F9F9F9; /* Very Light Gray Background */
+            color: #333333; 
+            margin: 0; 
+            padding: 20px; 
+            text-align: center; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 30px auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #DDDDDD; /* Light Border */
+        }
+        h1 { 
+            color: #333333; /* Dark Header */
+            margin-bottom: 25px; 
+            border-bottom: 2px solid #DDDDDD;
+            padding-bottom: 10px;
+        }
+        h3 { 
+            color: #555555; 
+            font-size: 1.1em; 
+            margin-top: 10px;
+        }
+        /* Message Box for already voted */
+        .voted-box { 
+            background: #EBEBEB; /* Light Gray */
+            padding: 20px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            color: #333333; 
+            font-weight: 600; 
+            border: 1px solid #AAAAAA; 
+        }
+        .voted-box a { 
+            color: #333333; 
+            font-weight: 700;
+            text-decoration: underline;
+        }
+        ul { 
+            list-style-type: none; 
+            padding: 0; 
+        }
+        li { 
+            margin-bottom: 10px; 
+            padding: 12px; 
+            background-color: #F0F0F0; /* Option Background */
+            border-radius: 6px; 
+            text-align: left; 
+            border: 1px solid #CCCCCC; 
+            transition: background-color 0.2s;
+        }
+        li:hover { 
+            background-color: #333333; /* Dark Hover Background */
+        }
+        label { 
+            font-size: 1em; 
+            display: inline-block; 
+            margin-left: 10px; 
+            color: #333; 
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        li:hover label { 
+            color: white; /* White text on hover */
+        }
+        .vote-button { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 25px; 
+            background-color: #666666; /* Vote Button */
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            font-family: 'Segoe UI', sans-serif; 
+            transition: background-color 0.3s;
+        }
+        .vote-button:hover { 
+            background-color: #333333; /* Darker Hover */
+        }
+        .back-link {
+            color: #666666; 
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗳️ Vote on: <span th:text="${poll.question}"></span></h1>
+        
+        <div th:if="${hasVoted}" class="voted-box">
+            <h2>Vote Recorded!</h2>
+            <p>You have already voted in this poll.</p>
+            <p><a th:href="@{/polls/results/{pollId}(pollId=${poll.id})}">View Current Results</a></p>
+        </div>
+
+        <div th:unless="${hasVoted}">
+            <h3>Please select your choice:</h3>
+            
+            <form th:action="@{/polls/submit/{pollId}(pollId=${poll.id})}" method="post">
+                <ul>
+                    <li th:each="participant : ${poll.participants}"> 
+                        <input type="radio" name="participantId" th:value="${participant.id}" required> 
+                        <label th:text="${participant.name}">Participant Option</label>
+                    </li>
+                </ul>
+                <button type="submit" class="vote-button">Submit Vote</button>
+            </form>
+        </div>
+        
+        <p style="margin-top: 30px;">
+            <a th:href="@{/polls/list}" class="back-link">← Back to Poll List</a>
+        </p>
+    </div>
+</body>
+</html>

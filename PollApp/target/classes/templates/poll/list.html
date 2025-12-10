@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Active Polls: Gallery</title>
+    <style>
+        /* BLACK & WHITE THEME STYLES */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #F9F9F9; /* Very Light Gray Background */
+            color: #333333; 
+            margin: 0; 
+            padding: 20px; 
+            text-align: center; 
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #DDDDDD; /* Light Border */
+        }
+        h1 { 
+            color: #333333; /* Dark Header */
+            text-align: center; 
+            margin-bottom: 30px; 
+            border-bottom: 2px solid #DDDDDD; 
+            padding-bottom: 10px;
+        }
+        .poll-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+            margin-top: 30px; 
+        }
+        .poll-card { 
+            background: #F0F0F0; /* Card Background */
+            padding: 25px; 
+            border-radius: 8px; 
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); 
+            text-align: left; 
+            transition: transform 0.2s; 
+            border: 1px solid #CCCCCC;
+        }
+        .poll-card:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15); 
+        }
+        .poll-card h3 { 
+            color: #555555; 
+            border-bottom: 1px solid #AAAAAA; 
+            padding-bottom: 10px; 
+            margin-top: 0; 
+            font-size: 1.1em; 
+        }
+        .poll-card p { 
+            color: #777777; 
+            font-size: 0.9em; 
+        }
+        .poll-card a { 
+            display: block; 
+            text-align: center; 
+            margin-top: 12px; 
+            padding: 10px; 
+            background-color: #666666; /* Vote Button */
+            color: white; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            transition: background-color 0.3s; 
+        }
+        .poll-card a:hover { 
+            background-color: #333333; 
+        }
+        .poll-card .view-results {
+            background-color: #666666 ; /* Results Button (Secondary) */
+            margin-top: 5px; 
+        }
+        .poll-card .view-results:hover {
+            background-color: #333333 ;
+        }
+        .create-link { 
+            display: inline-block; 
+            padding: 12px 25px; 
+            background-color: #333333; /* Primary Action Button */
+            color: white; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); 
+            transition: background-color 0.3s;
+        }
+        .create-link:hover { 
+            background-color: #666666; 
+        }
+        .success-message {
+            color: #333333; 
+            background: #DDDDDD; 
+            padding: 10px; 
+            border-radius: 6px; 
+            margin-bottom: 20px; 
+            font-weight: 600; 
+            border: 1px solid #AAAAAA;
+        }
+        .logout-button { 
+            padding: 10px 20px; 
+            background: #CCCCCC; 
+            color: #333; 
+            border: 1px solid #AAAAAA; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-family: 'Segoe UI', sans-serif;
+            transition: background 0.3s;
+        }
+        .logout-button:hover {
+            background: #AAAAAA;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Polls Gallery</h1>
+        <p><a th:href="@{/polls/create}" class="create-link">➕ Create a New Poll</a></p>
+        
+        <div th:if="${param.created}" class="success-message">
+            Poll created successfully!
+        </div>
+
+        <div class="poll-grid">
+            <div class="poll-card" th:each="poll : ${polls}">
+                <h3 th:text="${poll.question}">[Poll Question Placeholder]</h3>
+                <p>Created on: <span th:text="${#temporals.format(poll.createdAt, 'MMM d, yyyy')}"></span></p>
+                
+                <a th:href="@{/polls/vote/{pollId}(pollId=${poll.id})}">Vote Now</a>
+                <a th:href="@{/polls/results/{pollId}(pollId=${poll.id})}" class="view-results"> View Results</a>
+            </div>
+            
+            <div th:if="${#lists.isEmpty(polls)}" style="grid-column: 1 / -1; color: #555; padding: 20px;">
+                <p>No active polls right now. Time to create one!</p>
+            </div>
+        </div>
+        
+        <p style="margin-top: 40px;">
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </p>
+    </div>
+</body>
+</html>

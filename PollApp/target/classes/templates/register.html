@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register for PollApp</title>
+    <style>
+        /* BLACK & WHITE THEME STYLES */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #F9F9F9; /* Very Light Gray Background */
+            color: #333333; 
+            margin: 0; 
+            padding: 20px; 
+            text-align: center; 
+        }
+        .container { 
+            max-width: 400px; 
+            margin: 50px auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #DDDDDD; /* Light Border */
+            text-align: left; 
+        }
+        h1 { 
+            color: #333333; /* Dark Header */
+            text-align: center; 
+            margin-bottom: 30px; 
+            border-bottom: 2px solid #DDDDDD;
+            padding-bottom: 10px;
+        }
+        label { 
+            display: block; 
+            margin-top: 15px; 
+            color: #555555; 
+            font-weight: 600; 
+        }
+        input[type="text"], input[type="password"] { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #CCCCCC; 
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            margin-top: 5px; 
+        }
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 25px; 
+            background-color: #333333; /* Primary Action Button */
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: background-color 0.3s; 
+        }
+        button:hover { 
+            background-color: #666666; /* Darker Hover */
+        }
+        /* Error Message Styling */
+        .error-message { 
+            color: #8B0000; /* Use red for critical error text */
+            background-color: #F0F0F0; /* Light Gray Background */
+            padding: 5px; 
+            border-radius: 5px; 
+            font-size: 0.9em; 
+            display: block; 
+            margin-top: 5px; 
+            border: 1px solid #AAAAAA;
+        }
+        p { 
+            text-align: center; 
+            margin-top: 20px; 
+        }
+        .login-link {
+            color: #666666; 
+            font-weight: 700;
+            text-decoration: underline;
+        }
+        .login-link:hover {
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✍️ New User Registration</h1>
+        
+        <form method="post" th:action="@{/register}" th:object="${user}">
+            
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" th:field="*{username}" required>
+                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message"></span>
+            </div>
+            
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" th:field="*{password}" required>
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></span>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        
+        <p>Already registered? <a th:href="@{/login}" class="login-link">Login here!</a></p>
+    </div>
+</body>
+</html>
